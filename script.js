@@ -1,58 +1,64 @@
-const deck = document.querySelector('.cards');
-const message = document.querySelector('#message');
-const movesLabel = document.querySelector('#moves');
-const restart = document.querySelector('#restart');
-let firstCard = null;
-let secondCard = null;
-let locked = false;
+const cards = document.querySelectorAll('.card');
 let matched = 0;
-let moves = 0;
+let cardOne, cardTwo;
+let disableDeck = false;
 
-function resetTurn() {
-  firstCard = secondCard = null;
-  locked = false;
+function flipCard({
+  target: clickedCard
+}) {
+  if (cardOne !== clickedCard && !disableDeck) {
+    clickedCard.classList.add('flip');
+    if (!cardOne) {
+      return (cardOne = clickedCard);
+    }
+    cardTwo = clickedCard;
+    disableDeck = true;
+    let cardOneImg = cardOne.querySelector('.back-view img').src,
+      cardTwoImg = cardTwo.querySelector('.back-view img').src;
+    matchCards(cardOneImg, cardTwoImg);
+  }
 }
 
-function shuffleCards() {
-  const cards = [...deck.children];
-  cards.sort(() => Math.random() - 0.5);
-  cards.forEach(card => {
-    card.classList.remove('flip', 'matched');
-    deck.appendChild(card);
+function matchCards(img1, img2) {
+  if (img1 === img2) {
+    matched++;
+    if (matched == 8) {
+      setTimeout(() => {
+        return shuffleCard();
+      }, 1000);
+    }
+    cardOne.removeEventListener('click', flipCard);
+    cardTwo.removeEventListener('click', flipCard);
+    cardOne = cardTwo = '';
+    return (disableDeck = false);
+  }
+  setTimeout(() => {
+    cardOne.classList.add('shake');
+    cardTwo.classList.add('shake');
+  }, 400);
+  setTimeout(() => {
+    cardOne.classList.remove('shake', 'flip');
+    cardTwo.classList.remove('shake', 'flip');
+    cardOne = cardTwo = '';
+    disableDeck = false;
+  }, 1200);
+}
+
+function shuffleCard() {
+  matched = 0;
+  disableDeck = false;
+  cardOne = cardTwo = '';
+  let arr = [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
+  arr.sort(() => (Math.random() > 0.5 ? 1 : -1));
+  cards.forEach((card, i) => {
+    card.classList.remove('flip');
+    let imgTag = card.querySelector('.back-view img');
+    imgTag.src = `images/img-${arr[i]}.png`;
+    card.addEventListener('click', flipCard);
   });
-  matched = moves = 0;
-  movesLabel.textContent = 'Moves: 0';
-  message.textContent = 'Find all eight pairs.';
-  resetTurn();
 }
+shuffleCard();
 
-function flipCard() {
-  if (locked || this === firstCard || this.classList.contains('matched')) return;
-  this.classList.add('flip');
-  if (!firstCard) {
-    firstCard = this;
-    return;
-  }
-  secondCard = this;
-  locked = true;
-  moves++;
-  movesLabel.textContent = `Moves: ${moves}`;
-
-  if (firstCard.dataset.card === secondCard.dataset.card) {
-    firstCard.classList.add('matched');
-    secondCard.classList.add('matched');
-    matched += 2;
-    resetTurn();
-    if (matched === deck.children.length) message.textContent = `You won in ${moves} moves!`;
-  } else {
-    setTimeout(() => {
-      firstCard.classList.remove('flip');
-      secondCard.classList.remove('flip');
-      resetTurn();
-    }, 850);
-  }
-}
-
-deck.querySelectorAll('.card').forEach(card => card.addEventListener('click', flipCard));
-restart.addEventListener('click', shuffleCards);
-shuffleCards();
+cards.forEach((card) => {
+  card.addEventListener('click', flipCard);
+});

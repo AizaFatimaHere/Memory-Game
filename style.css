@@ -1,126 +1,145 @@
+/* Import Google Font - Poppins */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
-    margin: 0;
-    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
-    background: #df7d95;
-    font-family: Poppins, sans-serif;
-    color: #29232a;
+    min-height: 100vh;
+    background: rgb(223, 125, 149);
 }
 
-.game {
-    width: min(100%, 500px);
-    padding: 26px;
-    border-radius: 16px;
-    background: #fff8fa;
-    box-shadow: 0 12px 35px #75394b30;
-    text-align: center;
+.card .front-view span {
+    font-size: 40px;
+    color: rgb(223, 125, 149);
 }
 
-h1 {
-    margin: 0 0 14px;
-    font-size: 25px;
+.wrapper {
+    padding: 25px;
+    border-radius: 10px;
+    background: #F8F8F8;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
-.stats {
+.cards,
+.card,
+.view {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 18px;
-    font-size: 13px;
-    flex-wrap: wrap;
-}
-
-button {
-    border: 0;
-    border-radius: 8px;
-    padding: 8px 14px;
-    background: #df7d95;
-    color: white;
-    font: inherit;
-    cursor: pointer;
+    justify-content: center;
 }
 
 .cards {
-    width: 100%;
-    aspect-ratio: 1;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    padding: 0;
-    margin: 0;
+    height: 400px;
+    width: 400px;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
-.card {
-    list-style: none;
-    position: relative;
+.cards .card {
     cursor: pointer;
+    list-style: none;
+    user-select: none;
+    position: relative;
     perspective: 1000px;
+    transform-style: preserve-3d;
+    height: calc(100% / 4 - 10px);
+    width: calc(100% / 4 - 10px);
 }
 
-.front,
-.back {
+.card.shake {
+    animation: shake 0.35s ease-in-out;
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-13px);
+    }
+
+    40% {
+        transform: translateX(13px);
+    }
+
+    60% {
+        transform: translateX(-8px);
+    }
+
+    80% {
+        transform: translateX(8px);
+    }
+}
+
+.card .view {
+    width: 100%;
+    height: 100%;
     position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    border-radius: 9px;
-    background: white;
-    box-shadow: 0 3px 10px #00000012;
-    font-size: clamp(18px, 5vw, 32px);
+    border-radius: 7px;
+    background: #fff;
+    pointer-events: none;
     backface-visibility: hidden;
-    transition: transform .25s ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.25s linear;
 }
 
-.front {
-    color: #df7d95;
+.card .front-view img {
+    width: 19px;
 }
 
-.back {
+.card .back-view img {
+    max-width: 45px;
+}
+
+.card .back-view {
     transform: rotateY(-180deg);
 }
 
-.back img {
-    width: 58%;
-    max-height: 65%;
-    object-fit: contain;
-}
-
-.card.flip .front {
-    transform: rotateY(180deg);
-}
-
-.card.flip .back {
+.card.flip .back-view {
     transform: rotateY(0);
 }
 
-.card.matched {
-    cursor: default;
+.card.flip .front-view {
+    transform: rotateY(180deg);
 }
 
-.card.matched .back {
-    outline: 2px solid #df7d95;
-}
-
-@media (max-width: 420px) {
-    .game {
-        padding: 16px;
-    }
-
+@media screen and (max-width: 700px) {
     .cards {
-        gap: 7px;
+        height: 350px;
+        width: 350px;
     }
 
-    .stats {
-        justify-content: center;
+    .card .front-view img {
+        width: 17px;
+    }
+
+    .card .back-view img {
+        max-width: 40px;
+    }
+}
+
+@media screen and (max-width: 530px) {
+    .cards {
+        height: 300px;
+        width: 300px;
+    }
+
+    .card .front-view img {
+        width: 15px;
+    }
+
+    .card .back-view img {
+        max-width: 35px;
     }
 }
