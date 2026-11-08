@@ -16,16 +16,16 @@ body {
 }
 
 .cards {
-    width: 320px;
+    width: 360px;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
     padding: 0;
 }
 
 .card {
     list-style: none;
-    height: 140px;
+    height: 82px;
     position: relative;
     cursor: pointer;
 }
@@ -38,7 +38,7 @@ body {
     place-items: center;
     background: white;
     border-radius: 8px;
-    font-size: 36px;
+    font-size: 30px;
 }
 
 .back {
@@ -46,13 +46,18 @@ body {
 }
 
 .back img {
-    max-width: 65px;
+    max-width: 42px;
 }
 
-.card.show .front {
+.card.flip .front {
     display: none;
 }
 
-.card.show .back {
+.card.flip .back {
     display: grid;
+}
+
+.card.matched {
+    opacity: .55;
+    cursor: default;
 }
