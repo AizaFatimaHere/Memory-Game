@@ -1,10 +1,17 @@
 const deck = document.querySelector('.cards');
 const message = document.querySelector('#message');
+const movesLabel = document.querySelector('#moves');
 const restart = document.querySelector('#restart');
 let firstCard = null;
 let secondCard = null;
 let locked = false;
 let matched = 0;
+let moves = 0;
+
+function resetTurn() {
+  firstCard = secondCard = null;
+  locked = false;
+}
 
 function shuffleCards() {
   const cards = [...deck.children];
@@ -13,15 +20,10 @@ function shuffleCards() {
     card.classList.remove('flip', 'matched');
     deck.appendChild(card);
   });
-  firstCard = secondCard = null;
-  locked = false;
-  matched = 0;
+  matched = moves = 0;
+  movesLabel.textContent = 'Moves: 0';
   message.textContent = 'Find all eight pairs.';
-}
-
-function resetTurn() {
-  firstCard = secondCard = null;
-  locked = false;
+  resetTurn();
 }
 
 function flipCard() {
@@ -33,22 +35,21 @@ function flipCard() {
   }
   secondCard = this;
   locked = true;
+  moves++;
+  movesLabel.textContent = `Moves: ${moves}`;
 
   if (firstCard.dataset.card === secondCard.dataset.card) {
     firstCard.classList.add('matched');
     secondCard.classList.add('matched');
     matched += 2;
     resetTurn();
-    if (matched === deck.children.length) {
-      message.textContent = 'You won! Starting a new game...';
-      setTimeout(shuffleCards, 1200);
-    }
+    if (matched === deck.children.length) message.textContent = `You won in ${moves} moves!`;
   } else {
     setTimeout(() => {
       firstCard.classList.remove('flip');
       secondCard.classList.remove('flip');
       resetTurn();
-    }, 900);
+    }, 850);
   }
 }
 

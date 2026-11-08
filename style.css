@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
 * {
     box-sizing: border-box;
 }
@@ -5,30 +7,64 @@
 body {
     margin: 0;
     min-height: 100vh;
-    display: grid;
-    place-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
     background: #df7d95;
-    font-family: Arial, sans-serif;
+    font-family: Poppins, sans-serif;
+    color: #29232a;
 }
 
 .game {
+    width: min(100%, 500px);
+    padding: 26px;
+    border-radius: 16px;
+    background: #fff8fa;
+    box-shadow: 0 12px 35px #75394b30;
     text-align: center;
 }
 
+h1 {
+    margin: 0 0 14px;
+    font-size: 25px;
+}
+
+.stats {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 18px;
+    font-size: 13px;
+    flex-wrap: wrap;
+}
+
+button {
+    border: 0;
+    border-radius: 8px;
+    padding: 8px 14px;
+    background: #df7d95;
+    color: white;
+    font: inherit;
+    cursor: pointer;
+}
+
 .cards {
-    width: 400px;
-    height: 400px;
+    width: 100%;
+    aspect-ratio: 1;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
     padding: 0;
+    margin: 0;
 }
 
 .card {
     list-style: none;
     position: relative;
     cursor: pointer;
-    perspective: 800px;
+    perspective: 1000px;
 }
 
 .front,
@@ -37,19 +73,26 @@ body {
     inset: 0;
     display: grid;
     place-items: center;
+    border-radius: 9px;
     background: white;
-    border-radius: 7px;
-    font-size: 30px;
+    box-shadow: 0 3px 10px #00000012;
+    font-size: clamp(18px, 5vw, 32px);
     backface-visibility: hidden;
-    transition: transform .25s;
+    transition: transform .25s ease;
+}
+
+.front {
+    color: #df7d95;
 }
 
 .back {
-    transform: rotateY(180deg);
+    transform: rotateY(-180deg);
 }
 
 .back img {
-    max-width: 45px;
+    width: 58%;
+    max-height: 65%;
+    object-fit: contain;
 }
 
 .card.flip .front {
@@ -64,8 +107,20 @@ body {
     cursor: default;
 }
 
-button {
-    padding: 8px 16px;
-    margin: 8px;
-    cursor: pointer;
+.card.matched .back {
+    outline: 2px solid #df7d95;
+}
+
+@media (max-width: 420px) {
+    .game {
+        padding: 16px;
+    }
+
+    .cards {
+        gap: 7px;
+    }
+
+    .stats {
+        justify-content: center;
+    }
 }
