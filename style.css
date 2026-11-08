@@ -1,0 +1,58 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background: #e9a0b2;
+    font-family: Arial, sans-serif;
+}
+
+.game {
+    text-align: center;
+}
+
+.cards {
+    width: 320px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 0;
+}
+
+.card {
+    list-style: none;
+    height: 140px;
+    position: relative;
+    cursor: pointer;
+}
+
+.front,
+.back {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: white;
+    border-radius: 8px;
+    font-size: 36px;
+}
+
+.back {
+    display: none;
+}
+
+.back img {
+    max-width: 65px;
+}
+
+.card.show .front {
+    display: none;
+}
+
+.card.show .back {
+    display: grid;
+}
